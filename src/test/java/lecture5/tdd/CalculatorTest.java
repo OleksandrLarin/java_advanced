@@ -3,9 +3,11 @@ package lecture5.tdd;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class CalculatorTest {
 
+    public static final String ERROR_MESSAGE = "Negative numbers are not allowed here. Value of: %s";
     private Calculator calculator = new StringCalculator();
 
     @Test
@@ -48,7 +50,6 @@ public class CalculatorTest {
 
     @Test
     public void shouldThrowExceptionWhenStringHasNegativeNumber() {
-        String expectedMessage = "Negative numbers are not allowed here. Value of: \\d";
         String stringToCalculate = "10,23:7,14 6,-9";
 
         String actualMessage = "";
@@ -57,6 +58,15 @@ public class CalculatorTest {
         } catch (RuntimeException e) {
             actualMessage = e.getMessage();
         }
-        assertEquals(String.format(expectedMessage, -9), actualMessage);
+        assertEquals(String.format(ERROR_MESSAGE, -9), actualMessage);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenStringHasNegativeNumbers() {
+        String expectedMessage = String.format(ERROR_MESSAGE, String.join(", ", "-7", "-9"));
+        String stringToCalculate = "10,23:-7,14 6,-9";
+
+        Throwable throwable = assertThrows(RuntimeException.class, () -> calculator.add(stringToCalculate));
+        assertEquals(expectedMessage, throwable.getMessage());
     }
 }

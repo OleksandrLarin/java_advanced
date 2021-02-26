@@ -4,11 +4,17 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 public class ApplicationTest {
 
@@ -77,4 +83,15 @@ public class ApplicationTest {
         }
     }
 
+    @Rule
+    public TemporaryFolder tmpFolder = new TemporaryFolder();
+
+    @Test
+    public void givenTempFolderRule_whenNewFile_thenFileIsCreated() throws IOException {
+        File testFile = tmpFolder.newFile("test.txt");
+
+        assertTrue(testFile.isFile());
+        assertEquals(tmpFolder.getRoot(), testFile.getParentFile());
+        System.out.println(tmpFolder.getRoot());
+    }
 }
