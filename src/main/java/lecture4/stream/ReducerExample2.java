@@ -8,7 +8,7 @@ public class ReducerExample2 {
     public static void main(String[] args) {
         List<Integer> numbers = Arrays.asList(1, 2, 3, 4);
 
-        // parallel: 10*1 + 10*2 + 10*3 + 10*4
+        // parallel: 10*1 + 10*2 + 10*3 + 10*4 = 100
         Integer sum = numbers.stream().parallel()
                 .reduce(10, (identity, val) -> identity * val, (left, right) -> left + right);
 

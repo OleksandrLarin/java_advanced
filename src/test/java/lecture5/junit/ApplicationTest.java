@@ -7,9 +7,11 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.rules.Timeout;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
@@ -93,5 +95,13 @@ public class ApplicationTest {
         assertTrue(testFile.isFile());
         assertEquals(tmpFolder.getRoot(), testFile.getParentFile());
         System.out.println(tmpFolder.getRoot());
+    }
+
+    @Rule
+    public Timeout globalTimeout = Timeout.seconds(10);
+
+    @Test
+    public void givenLongRunningTest_whenTimeout_thenTestFails() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(20);
     }
 }
